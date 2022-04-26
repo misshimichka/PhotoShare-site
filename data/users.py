@@ -19,7 +19,7 @@ class User(SqlAlchemyBase, UserMixin):
     created_date = sqlalchemy.Column(sqlalchemy.DateTime,
                                      default=datetime.datetime.now)
 
-    jobs = orm.relation("Jobs", back_populates='user')
+    avatar = sqlalchemy.Column(sqlalchemy.LargeBinary, nullable=True)
 
     def set_password(self, password):
          self.hashed_password = generate_password_hash(password)

@@ -1,0 +1,132 @@
+.btn-color {
+    background-color: #1F2F49;
+    color: #FFFFFF;
+}
+
+.btn-color-2 {
+    background-color: #FFFFFF;
+}
+
+.background {
+    background-image: url(../../static/background/page_background.jpg);
+}
+
+.background-2 {
+    background: #FFFFFF;
+}
+
+.about {
+    font-family: "Roboto";
+    font-size: 16px;
+}
+
+p {
+    font-family: 'EB Garamond', serif;
+    font-size: 20px;
+}
+
+.carousel {
+    height: 400px;
+    width: 600px;
+    margin-left: 230px;
+ 	padding-top: 25px;
+}
+
+.carousel-item img{
+    margin: auto;
+    display: block;
+}
+
+.p-2 {
+    color: #1F2F49;
+}
+
+.p-1 {
+    color: #FFFFFF;
+}
+
+.h3-2 {
+    font-family: 'EB Garamond', serif;
+    color: #1F2F49;
+}
+
+.border {
+    color: #1F2F49;
+}
+
+.h3-1 {
+    font-family: 'EB Garamond', serif;
+    color: #FFFFFF;
+}
+
+.hidden-menu {
+  display: block;
+  position: fixed;
+  list-style:none;
+  padding: 10px;
+  margin: 0;
+  box-sizing: border-box;
+  width: 200px;
+  background-color: #FFFFFF;
+  height: 100%;
+  top: 0;
+  left: -200px;
+  transition: left .2s;
+  z-index: 2;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+}
+
+.hidden-menu-ticker {
+  display: none;
+}
+
+.btn-menu {
+  color: #fff;
+  background-color: #1F2F49;
+  padding: 5px;
+  position: fixed;
+  top: 5px;
+  left: 5px;
+  cursor: pointer;
+  transition: left .23s;
+  z-index: 3;
+  width: 25px;
+  -webkit-transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+}
+.btn-menu span {
+  display: block;
+  height: 5px;
+  background-color: #fff;
+  margin: 5px 0 0;
+  transition: all .1s linear .23s;
+  position: relative;
+}
+.btn-menu span.first {
+  margin-top: 0;
+}
+
+.hidden-menu-ticker:checked ~ .btn-menu {
+  left: 160px;
+}
+.hidden-menu-ticker:checked ~ .hidden-menu {
+  left: 0;
+}
+.hidden-menu-ticker:checked ~ .btn-menu span.first {
+  -webkit-transform: rotate(45deg);
+  top: 10px;
+}
+.hidden-menu-ticker:checked ~ .btn-menu span.second {
+  opacity: 0;
+}
+.hidden-menu-ticker:checked ~ .btn-menu span.third {
+  -webkit-transform: rotate(-45deg);
+  top: -10px;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}

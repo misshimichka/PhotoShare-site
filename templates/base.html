@@ -7,21 +7,40 @@
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
           crossorigin="anonymous">
-    <title>{{title}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond&display=swap" rel="stylesheet">
+    <title>PhotoShare</title>
 </head>
-<body>
+<body class="background">
 <header>
-    <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Mars One</a>
-        {% if current_user.is_authenticated %}
-        <a class="navbar-brand" href="/logout">{{ current_user.name }}</a>
-        {% else %}
-        <p>
-            <a class="btn btn-primary " href="/register">Зарегистрироваться</a>
-            <a class="btn btn-success" href="/login">Войти</a>
-        </p>
-        {% endif %}
-    </nav>
+    {% if current_user.is_authenticated %}
+    <input type="checkbox" id="hmt1" class="hidden-menu-ticker">
+    <label class="btn-menu" for="hmt1">
+        <span class="first"></span>
+        <span class="second"></span>
+        <span class="third"></span>
+    </label>
+    <ul class="hidden-menu">
+        <li><p class="p-2"><a href="/profile">My Profile</a></li></p>
+        <li><p class="p-2"><a href="/main">Main Page</a></li></p>
+        <li><p class="p-2"><a href="/logout">Logout</a></li></p>
+        <li><p class="p-2"><a href="/dev">About developer</a></li></p>
+    </ul>
+    {% else %}
+    <input type="checkbox" id="hmt2" class="hidden-menu-ticker">
+    <label class="btn-menu" for="hmt2">
+        <span class="first"></span>
+        <span class="second"></span>
+        <span class="third"></span>
+    </label>
+    <ul class="hidden-menu">
+        <li><p class="p-2"><a href="/login">Log In</a></li></p>
+        <li><p class="p-2"><a href="/register">Register</a></li></p>
+        <li><p class="p-2"><a href="/dev">About developer</a></li></p>
+    </ul>
+    {% endif %}
 </header>
 <!-- Begin page content -->
 <main role="main" class="container">

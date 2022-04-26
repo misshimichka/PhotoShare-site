@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, make_response, jsonify
 
 from data import db_session
 from data.users import User
@@ -203,6 +203,10 @@ def dev():
 #                            title='Редактирование новости',
 #                            form=form
 #                            )
+#
+# @app.errorhandler(404)
+# def not_found(error):
+#     return make_response(jsonify({'error': 'Not found'}), 404)
 
 
 if __name__ == '__main__':

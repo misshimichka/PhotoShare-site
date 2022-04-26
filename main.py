@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, redirect, make_response, jsonify
+from flask import Flask, render_template, redirect
 
 from data import db_session
 from data.users import User

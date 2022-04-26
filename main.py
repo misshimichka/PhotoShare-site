@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, redirect, make_response, jsonify
 
 from data import db_session
@@ -25,6 +27,8 @@ login_manager.init_app(app)
 
 def main():
     db_session.global_init("db/photos.db")
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
     app.run()
 
 

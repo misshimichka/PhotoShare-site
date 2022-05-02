@@ -4,7 +4,7 @@ from wtforms.validators import DataRequired
 
 
 class PhotoForm(FlaskForm):
-    name = StringField('Название', validators=[DataRequired()])
-    about = TextAreaField('Описание', validators=[DataRequired()])
-    image = FileField("Выберите файл")
-    submit = SubmitField('Добавить')
+    name = StringField('Name', validators=[DataRequired()])
+    about = TextAreaField('Info', validators=[DataRequired()])
+    image = FileField("Choose file")
+    submit = SubmitField('Save changes')

@@ -1,6 +1,8 @@
 import os
+import math
 
 from flask import Flask, render_template, redirect
+from werkzeug.exceptions import abort
 
 from data import db_session
 from data.users import User
@@ -47,33 +49,36 @@ def index():
 def profile():
     db_sess = db_session.create_session()
     result = db_sess.query(User).filter(User.id == current_user.id).first()
-    f = open(f"static/img/{current_user.id}.jpg", mode="wb")
+    f = open(f"static/img/images/{current_user.id}.jpg", mode="wb")
     if result.avatar is None:
         return render_template("profile.html", name=current_user.name, about=current_user.about,
-                               image=f"static/img/anya4.jpg")
+                               image=f"static/img/img1.jpg")
     f.write(base64.b64decode(result.avatar))
     return render_template("profile.html", name=current_user.name, about=current_user.about,
-                           image=f"static/img/{current_user.id}.jpg")
+                           image=f"static/img/images/{current_user.id}.jpg")
 
 
 @app.route("/main")
-def main_page():
+@app.route("/main/<int:page_id>")
+def main_page(page_id=1):
+    import os
+    import glob
+
+    files = glob.glob('static/img/images/*')
+    for f in files:
+        os.remove(f)
+
     db_sess = db_session.create_session()
     photos = db_sess.query(Image).all()
-    s = []
-    x = []
-    for i in range(len(photos)):
-        f = open(f"static/img/{i}.jpg", mode="wb")
-        f.write(base64.b64decode(photos[i].image))
-        change_size(f"static/img/{i}.jpg")
-        user = db_sess.query(User).filter(User.id == photos[i].user_id).first()
 
-        if i % 3 == 0 and i != 0:
-            s.append(x)
-            x = []
-        x.append((f"static/img/{i}.jpg", photos[i].about, photos[i].name, user.name))
-    s.append(x)
-    return render_template("main_page.html", name=current_user.name, about=current_user.about, photos=s)
+    x = []
+    for i in photos[(page_id - 1) * 3: page_id * 3]:
+        f = open(f"static/{photos.index(i)}.jpg", mode="wb")
+        f.write(base64.b64decode(i.image))
+        change_size(f"static/{photos.index(i)}.jpg")
+        user = db_sess.query(User).filter(User.id == i.user_id).first()
+        x.append((f"{photos.index(i)}.jpg", i.about, i.name, user.name, i.id))
+    return render_template("main_page.html", photos=x, page=page_id, len=math.ceil(len(photos) / 3))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -126,6 +131,13 @@ def logout():
 @app.route("/change_info", methods=["GET", "POST"])
 @login_required
 def change_info():
+    import os
+    import glob
+
+    files = glob.glob('static/img/images/*')
+    for f in files:
+        os.remove(f)
+
     form = ChangeInfoForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -133,8 +145,8 @@ def change_info():
         current_user.name = form.name.data
         current_user.about = form.about.data
         image.user_id = current_user.id
-        form.image.data.save(f"static/img/{current_user.id}.jpg")
-        f = open(f"static/img/{current_user.id}.jpg", mode="rb").read()
+        form.image.data.save(f"static/img/images/{current_user.id}.jpg")
+        f = open(f"static/img/images/{current_user.id}.jpg", mode="rb").read()
         image.image = base64.b64encode(f)
         current_user.avatar = base64.b64encode(f)
         db_sess.merge(current_user)
@@ -146,15 +158,22 @@ def change_info():
 
 @app.route('/add_photo', methods=['GET', 'POST'])
 @login_required
-def add_jobs():
+def add_photo():
+    import os
+    import glob
+
+    files = glob.glob('static/*.jpg')
+    for f in files:
+        os.remove(f)
+
     form = PhotoForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         image = Image()
         image.name = form.name.data
         image.about = form.about.data
-        form.image.data.save(f"static/img/{form.image.data.filename}")
-        f = open(f"static/img/{form.image.data.filename}", mode="rb").read()
+        form.image.data.save(f"static/{form.image.data.filename}")
+        f = open(f"static/{form.image.data.filename}", mode="rb").read()
         image.image = base64.b64encode(f)
         image.user_id = current_user.id
         db_sess.merge(current_user)
@@ -170,8 +189,17 @@ def dev():
     return render_template("developer.html")
 
 
-#
-#
+@app.route("/delete_photo/<int:image_id>")
+@app.route("/delete_photo")
+def delete_photo(image_id=1):
+    db_sess = db_session.create_session()
+    result = db_sess.query(Image).filter(Image.id == image_id, Image.user_id == current_user.id).first()
+    if result:
+        db_sess.delete(result)
+        db_sess.commit()
+    return redirect("/main")
+
+
 # @app.route('/jobs/<int:id>', methods=['GET', 'POST'])
 # @login_required
 # def edit_jobs(id):

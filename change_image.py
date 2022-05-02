@@ -2,7 +2,7 @@ from PIL import Image
 
 
 def change_size(path):
-    fixed_height = 150
+    fixed_height = 350
     img = Image.open(path)
     height_percent = (fixed_height / float(img.size[1]))
     width_size = int((float(img.size[0]) * float(height_percent)))
